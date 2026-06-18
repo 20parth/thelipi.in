@@ -217,7 +217,10 @@ export function TypingDemo() {
           {/* Key to press */}
           <div className="flex flex-col items-center gap-2">
             <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Key to Press</span>
-            <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Fixed height reserved for the tallest possible tile (the "current" size) so the row's
+                own box never changes size as a tile grows/shrinks — only the tile repaints in place.
+                Without this, the row briefly shrank mid-transition and shifted everything below it. */}
+            <div className="flex items-center gap-1.5 sm:gap-2" style={{ height: 'clamp(40px, 12vw, 64px)' }}>
               {WORD.split('').map((ch, i) => {
                 const isCur = i === curIdx
                 const isPast = i < curIdx

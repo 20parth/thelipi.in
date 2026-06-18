@@ -77,7 +77,7 @@ const plansWithPayment = await Promise.all(
             <p class="text-sm font-semibold text-foreground">Scan to Pay ₹{plan.price}</p>
             <img src={plan.qr} alt={`UPI QR code to pay ₹${plan.price} for ${plan.name}`} width="180" height="180" class="rounded-md" />
             <p class="text-xs text-muted-foreground">Scan with GPay, PhonePe, Paytm or any UPI app</p>
-            <p class="font-mono text-xs text-foreground/70">UPI ID: 8275320626@ybl</p>
+            {/* <p class="font-mono text-xs text-foreground/70">UPI ID: 8275320626@ybl</p> */}
           </div>
 
           <a
