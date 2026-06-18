@@ -1,0 +1,65 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import Footer from '@/components/Footer.astro'
+
+interface Props {
+  title: string
+  description: string
+}
+
+const { title, description } = Astro.props
+---
+
+<Layout title={`${title} | LiPi`} description={description}>
+  <header class="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
+    <div class="container mx-auto flex items-center justify-between px-4 py-3">
+      <a href="/" class="flex items-center gap-2">
+        <img src="/logo.png" alt="LiPi logo" width="40" height="40" class="rounded-full" />
+        <span class="text-xl font-bold text-foreground">LiPi</span>
+      </a>
+      <a href="/" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">← Back to Home</a>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-3xl px-4 py-16">
+    <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
+    <p class="mt-2 text-sm text-muted-foreground">Last updated: 19 June 2026</p>
+
+    <div class="legal-content mt-10 text-foreground/90">
+      <slot />
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .legal-content :global(h2) {
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .legal-content :global(p) {
+    margin-top: 0.75rem;
+    line-height: 1.7;
+    color: hsl(var(--foreground) / 0.85);
+  }
+  .legal-content :global(ul) {
+    margin-top: 0.75rem;
+    margin-left: 1.25rem;
+    list-style-type: disc;
+  }
+  .legal-content :global(li) {
+    margin-top: 0.4rem;
+    line-height: 1.7;
+    color: hsl(var(--foreground) / 0.85);
+  }
+  .legal-content :global(a) {
+    color: hsl(var(--brand));
+    font-weight: 500;
+  }
+  .legal-content :global(strong) {
+    font-weight: 700;
+  }
+</style>

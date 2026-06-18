@@ -28,32 +28,14 @@ export function Hero() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background">
-      {/* Depth grid */}
-      <div className="bg-grid pointer-events-none absolute inset-0 z-0" />
-
-      {/* Gradient background with grain effect — light: violet/purple, dark: full aurora.
-          Radial gradients fade to transparent by design, so there's never a hard edge no
-          matter how narrow the viewport is or how much blur lands on screen (a fixed blur
-          radius isn't enough to soften a 60-90rem-wide solid-colour shape on its own). */}
-      <div className="pointer-events-none absolute -right-60 -top-10 z-0 flex flex-col items-end dark:hidden" aria-hidden>
-        <div className="h-[10rem] w-[60rem] rounded-full opacity-50 animate-aurora [animation-delay:-2s]" style={{ background: 'radial-gradient(ellipse closest-side, #a78bfa, #d8b4fe 55%, transparent 80%)' }} />
-        <div className="h-[10rem] w-[80rem] rounded-full opacity-40 animate-aurora [animation-delay:-8s]" style={{ background: 'radial-gradient(ellipse closest-side, #f0abfc, #a5b4fc 55%, transparent 80%)' }} />
-        <div className="h-[10rem] w-[60rem] rounded-full opacity-40 animate-aurora [animation-delay:-12s]" style={{ background: 'radial-gradient(ellipse closest-side, #d8b4fe, #a78bfa 55%, transparent 80%)' }} />
-      </div>
-      <div className="pointer-events-none absolute -right-60 -top-10 z-0 hidden flex-col items-end dark:flex" aria-hidden>
-        <div className="h-[10rem] w-[60rem] rounded-full animate-aurora [animation-delay:-2s]" style={{ background: 'radial-gradient(ellipse closest-side, #9333ea, #0284c7 55%, transparent 80%)' }} />
-        <div className="h-[10rem] w-[90rem] rounded-full animate-aurora [animation-delay:-8s]" style={{ background: 'radial-gradient(ellipse closest-side, #831843, #facc15 55%, transparent 80%)' }} />
-        <div className="h-[10rem] w-[60rem] rounded-full animate-aurora [animation-delay:-12s]" style={{ background: 'radial-gradient(ellipse closest-side, #ca8a04, #0ea5e9 55%, transparent 80%)' }} />
-      </div>
-      <div className="bg-noise pointer-events-none absolute inset-0 z-0 hidden opacity-30 dark:block" />
-
-      {/* Content container */}
-      <div className="relative z-10">
-        {/* Navigation */}
-        <nav className="container mx-auto flex items-center justify-between px-4 py-4 mt-6">
+    <>
+      {/* Navigation lives OUTSIDE the overflow-hidden hero wrapper below — `sticky` only works
+          up to the nearest ancestor with overflow:hidden, so nesting it inside that wrapper would
+          make it stop sticking the moment the user scrolls past the hero's own height. */}
+      <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
+        <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <a href="/" className="flex items-center">
-            <img src="/logo.png" alt="LiPi logo" className="h-8 w-8 rounded-full" />
+            <img src="/logo.png" alt="LiPi logo" className="h-12 w-12 rounded-full" />
             <span className="ml-2 text-xl font-bold text-foreground">LiPi</span>
           </a>
 
@@ -105,61 +87,84 @@ export function Hero() {
               )}
             </button>
           </div>
-        </nav>
+        </div>
+      </nav>
 
-        {/* Mobile Navigation Menu with animation */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ y: '-100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '-100%' }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-50 flex flex-col p-4 bg-background/95 md:hidden"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <img src="/logo.png" alt="LiPi logo" className="h-8 w-8 rounded-full" />
-                  <span className="ml-2 text-xl font-bold text-foreground">LiPi</span>
-                </div>
-                <button onClick={() => setMobileMenuOpen(false)}>
-                  <X className="h-6 w-6 text-foreground" />
-                </button>
+      {/* Mobile Navigation Menu with animation */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ y: '-100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '-100%' }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex flex-col p-4 bg-background/95 md:hidden"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <img src="/logo.png" alt="LiPi logo" className="h-12 w-12 rounded-full" />
+                <span className="ml-2 text-xl font-bold text-foreground">LiPi</span>
               </div>
-              <div className="mt-8 flex flex-col space-y-6">
-                {NAV_LINKS.map((l) => (
-                  <a
-                    key={l.href}
-                    href={l.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between border-b border-border pb-2 text-lg text-foreground"
-                  >
-                    <span>{l.label}</span>
-                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                  </a>
-                ))}
+              <button onClick={() => setMobileMenuOpen(false)}>
+                <X className="h-6 w-6 text-foreground" />
+              </button>
+            </div>
+            <div className="mt-8 flex flex-col space-y-6">
+              {NAV_LINKS.map((l) => (
                 <a
-                  href={DOWNLOAD_URL}
-                  download
+                  key={l.href}
+                  href={l.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex h-12 items-center justify-center rounded-full bg-foreground px-8 text-base font-medium text-background"
+                  className="flex items-center justify-between border-b border-border pb-2 text-lg text-foreground"
                 >
-                  Download
+                  <span>{l.label}</span>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
                 </a>
-                <a
-                  href="#pricing"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex h-12 items-center justify-center rounded-full border border-border px-8 text-base font-medium text-foreground"
-                >
-                  Get License
-                </a>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              ))}
+              <a
+                href={DOWNLOAD_URL}
+                download
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex h-12 items-center justify-center rounded-full bg-foreground px-8 text-base font-medium text-background"
+              >
+                Download
+              </a>
+              <a
+                href="#pricing"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex h-12 items-center justify-center rounded-full border border-border px-8 text-base font-medium text-foreground"
+              >
+                Get License
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
+    <div className="relative min-h-screen overflow-hidden bg-background">
+      {/* Depth grid */}
+      <div className="bg-grid pointer-events-none absolute inset-0 z-0" />
+
+      {/* Gradient background with grain effect — light: violet/purple, dark: full aurora.
+          Radial gradients fade to transparent by design, so there's never a hard edge no
+          matter how narrow the viewport is or how much blur lands on screen (a fixed blur
+          radius isn't enough to soften a 60-90rem-wide solid-colour shape on its own). */}
+      <div className="pointer-events-none absolute -right-60 -top-10 z-0 flex flex-col items-end dark:hidden" aria-hidden>
+        <div className="h-[10rem] w-[60rem] rounded-full opacity-50 animate-aurora [animation-delay:-2s]" style={{ background: 'radial-gradient(ellipse closest-side, #a78bfa, #d8b4fe 55%, transparent 80%)' }} />
+        <div className="h-[10rem] w-[80rem] rounded-full opacity-40 animate-aurora [animation-delay:-8s]" style={{ background: 'radial-gradient(ellipse closest-side, #f0abfc, #a5b4fc 55%, transparent 80%)' }} />
+        <div className="h-[10rem] w-[60rem] rounded-full opacity-40 animate-aurora [animation-delay:-12s]" style={{ background: 'radial-gradient(ellipse closest-side, #d8b4fe, #a78bfa 55%, transparent 80%)' }} />
+      </div>
+      <div className="pointer-events-none absolute -right-60 -top-10 z-0 hidden flex-col items-end dark:flex" aria-hidden>
+        <div className="h-[10rem] w-[60rem] rounded-full animate-aurora [animation-delay:-2s]" style={{ background: 'radial-gradient(ellipse closest-side, #9333ea, #0284c7 55%, transparent 80%)' }} />
+        <div className="h-[10rem] w-[90rem] rounded-full animate-aurora [animation-delay:-8s]" style={{ background: 'radial-gradient(ellipse closest-side, #831843, #facc15 55%, transparent 80%)' }} />
+        <div className="h-[10rem] w-[60rem] rounded-full animate-aurora [animation-delay:-12s]" style={{ background: 'radial-gradient(ellipse closest-side, #ca8a04, #0ea5e9 55%, transparent 80%)' }} />
+      </div>
+      <div className="bg-noise pointer-events-none absolute inset-0 z-0 hidden opacity-30 dark:block" />
+
+      {/* Content container */}
+      <div className="relative z-10">
         {/* Badge */}
-        <div className="mx-auto mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full bg-accent px-4 py-2 backdrop-blur-sm">
+        <div className="mx-auto mt-12 flex max-w-fit items-center justify-center space-x-2 rounded-full bg-accent px-4 py-2 backdrop-blur-sm">
           <span className="text-sm font-medium text-foreground">Marathi/English Tutor Mode</span>
           <ArrowRight className="h-4 w-4 text-foreground" />
         </div>
@@ -202,5 +207,6 @@ export function Hero() {
         </div>
       </div>
     </div>
+    </>
   )
 }
