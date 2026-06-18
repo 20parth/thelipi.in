@@ -32,16 +32,19 @@ export function Hero() {
       {/* Depth grid */}
       <div className="bg-grid pointer-events-none absolute inset-0 z-0" />
 
-      {/* Gradient background with grain effect — light: violet/purple, dark: full aurora */}
+      {/* Gradient background with grain effect — light: violet/purple, dark: full aurora.
+          Radial gradients fade to transparent by design, so there's never a hard edge no
+          matter how narrow the viewport is or how much blur lands on screen (a fixed blur
+          radius isn't enough to soften a 60-90rem-wide solid-colour shape on its own). */}
       <div className="pointer-events-none absolute -right-60 -top-10 z-0 flex flex-col items-end dark:hidden" aria-hidden>
-        <div className="h-[10rem] w-[60rem] rounded-full bg-gradient-to-b from-violet-400 to-purple-300 opacity-50 animate-aurora [animation-delay:-2s]" />
-        <div className="h-[10rem] w-[80rem] rounded-full bg-gradient-to-b from-fuchsia-300 to-indigo-300 opacity-40 animate-aurora [animation-delay:-8s]" />
-        <div className="h-[10rem] w-[60rem] rounded-full bg-gradient-to-b from-purple-300 to-violet-400 opacity-40 animate-aurora [animation-delay:-12s]" />
+        <div className="h-[10rem] w-[60rem] rounded-full opacity-50 animate-aurora [animation-delay:-2s]" style={{ background: 'radial-gradient(ellipse closest-side, #a78bfa, #d8b4fe 55%, transparent 80%)' }} />
+        <div className="h-[10rem] w-[80rem] rounded-full opacity-40 animate-aurora [animation-delay:-8s]" style={{ background: 'radial-gradient(ellipse closest-side, #f0abfc, #a5b4fc 55%, transparent 80%)' }} />
+        <div className="h-[10rem] w-[60rem] rounded-full opacity-40 animate-aurora [animation-delay:-12s]" style={{ background: 'radial-gradient(ellipse closest-side, #d8b4fe, #a78bfa 55%, transparent 80%)' }} />
       </div>
       <div className="pointer-events-none absolute -right-60 -top-10 z-0 hidden flex-col items-end dark:flex" aria-hidden>
-        <div className="h-[10rem] w-[60rem] rounded-full bg-gradient-to-b from-purple-600 to-sky-600 animate-aurora [animation-delay:-2s]" />
-        <div className="h-[10rem] w-[90rem] rounded-full bg-gradient-to-b from-pink-900 to-yellow-400 animate-aurora [animation-delay:-8s]" />
-        <div className="h-[10rem] w-[60rem] rounded-full bg-gradient-to-b from-yellow-600 to-sky-500 animate-aurora [animation-delay:-12s]" />
+        <div className="h-[10rem] w-[60rem] rounded-full animate-aurora [animation-delay:-2s]" style={{ background: 'radial-gradient(ellipse closest-side, #9333ea, #0284c7 55%, transparent 80%)' }} />
+        <div className="h-[10rem] w-[90rem] rounded-full animate-aurora [animation-delay:-8s]" style={{ background: 'radial-gradient(ellipse closest-side, #831843, #facc15 55%, transparent 80%)' }} />
+        <div className="h-[10rem] w-[60rem] rounded-full animate-aurora [animation-delay:-12s]" style={{ background: 'radial-gradient(ellipse closest-side, #ca8a04, #0ea5e9 55%, transparent 80%)' }} />
       </div>
       <div className="bg-noise pointer-events-none absolute inset-0 z-0 hidden opacity-30 dark:block" />
 
@@ -157,7 +160,7 @@ export function Hero() {
 
         {/* Badge */}
         <div className="mx-auto mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full bg-accent px-4 py-2 backdrop-blur-sm">
-          <span className="text-sm font-medium text-foreground">17-Lesson Marathi Tutor Mode</span>
+          <span className="text-sm font-medium text-foreground">Marathi/English Tutor Mode</span>
           <ArrowRight className="h-4 w-4 text-foreground" />
         </div>
 

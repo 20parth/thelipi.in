@@ -3,13 +3,13 @@ import { Keyboard, BookOpen, Gauge, Hand, Volume2, WifiOff, School, Languages, t
 const FEATURES: { icon: LucideIcon; title: string; desc: string }[] = [
   {
     icon: Keyboard,
-    title: 'Official Remington Keyboard Layout',
-    desc: 'Type Marathi using the same CDAC GIST-verified Remington layout used in government typing exams — no separate Marathi keyboard or IME needed.'
+    title: 'Official Remington Keyboard Layout without ISM',
+    desc: 'Type Marathi using the same CDAC GIST-verified Remington layout used in government typing exams, no separate Marathi keyboard or ISM needed.'
   },
   {
     icon: BookOpen,
-    title: '17-Lesson Guided Tutor Mode',
-    desc: 'A structured path from vowels and barakhadi to half-letters, conjuncts, rakar, reph, vakar, and exam-level words — each lesson with real practice drills.'
+    title: '17+ Lesson Guided Tutor Mode',
+    desc: 'A structured path from vowels and barakhadi to half-letters, conjuncts, rakar, reph, vakar, and exam-level words each lesson with real practice drills.'
   },
   {
     icon: Gauge,
@@ -19,7 +19,7 @@ const FEATURES: { icon: LucideIcon; title: string; desc: string }[] = [
   {
     icon: Hand,
     title: 'On-Screen Guided Keyboard',
-    desc: 'A visual keyboard with finger-position colour hints and live Shift-state switching — beginners see exactly which key and which finger to use.'
+    desc: 'A visual keyboard with finger-position colour hints and live Shift-state switching, beginners see exactly which key and which finger to use.'
   },
   {
     icon: Volume2,
@@ -34,7 +34,7 @@ const FEATURES: { icon: LucideIcon; title: string; desc: string }[] = [
   {
     icon: School,
     title: 'Built for Typing Institutes',
-    desc: 'One license per machine, simple activation, and content designed around real exam syllabi — ideal for institutes running batches of students.'
+    desc: 'One license per machine, simple activation, and content designed around real exam syllabi ideal for institutes running batches of students.'
   },
   {
     icon: Languages,
