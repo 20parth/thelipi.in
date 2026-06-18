@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import { Hero } from '@/components/Hero'
+import { TypingDemo } from '@/components/TypingDemo'
 import { Features } from '@/components/Features'
 import Screenshots from '@/components/Screenshots.astro'
 import Download from '@/components/Download.astro'
@@ -11,6 +12,7 @@ import Footer from '@/components/Footer.astro'
 <Layout>
   <main>
     <Hero client:load />
+    <TypingDemo client:visible />
 
     <Features />
     <Screenshots />
