@@ -189,7 +189,7 @@ export function Hero() {
 
             {/* Hero Image */}
             <img
-              src="/screenshots/hero-mockup.svg"
+              src="/screenshots/hero-mockup.png"
               alt="LiPi typing tutor app — placeholder screenshot"
               width={1248}
               height={765}

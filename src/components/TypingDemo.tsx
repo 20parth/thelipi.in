@@ -144,17 +144,30 @@ function HandSVG({ hand, activeFinger }: { hand: Hand; activeFinger: Finger | nu
           <path d="M52.415 56.2247C42.0739 68.2089 32.0864 65.6768 28.6801 63.7809C25.2739 61.8843 22.9149 56.8312 21.3329 48.8794L18.7773 40.728C18.0448 41.1719 15.2796 42.9708 12.4841 44.996C12.8019 46.4073 13.0992 47.7024 13.3385 48.6501C14.1879 52.8192 16.1896 66.1887 21.2284 69.87C29.8392 76.1607 44.0453 74.865 49.3778 68.6849C54.7103 62.5049 54.9205 58.598 59.5093 53.5177C63.3934 49.2182 68.389 49.8772 70.2813 47.6845C71.1462 46.6824 70.8426 45.3947 70.2442 44.303C68.2685 48.7305 62.7542 44.243 52.415 56.2247Z" fill={`url(#${p}g15)`} />
         </g>
 
-        {activeFinger !== null &&
-          (() => {
-            const tip = TIPS[activeFinger]
-            const color = FINGER_COLOR[activeFinger]
-            return (
-              <g style={{ filter: `drop-shadow(0 0 4px ${color})` }}>
-                <circle cx={tip.cx} cy={tip.cy} r={tip.r + 3.5} fill="none" stroke={color} strokeWidth={1.5} opacity={0.35} />
-                <circle cx={tip.cx} cy={tip.cy} r={tip.r} fill={color} />
-              </g>
-            )
-          })()}
+        {/* Always rendered (same DOM nodes) so cx/cy/fill transition smoothly between fingers
+            on this hand; opacity fades in/out when the active hand switches to the other side. */}
+        {(() => {
+          const tip = activeFinger !== null ? TIPS[activeFinger] : TIPS[0]
+          const color = activeFinger !== null ? FINGER_COLOR[activeFinger] : FINGER_COLOR[0]
+          return (
+            <g
+              style={{
+                filter: `drop-shadow(0 0 4px ${color})`,
+                opacity: activeFinger !== null ? 1 : 0,
+                transition: 'opacity 0.35s ease'
+              }}
+            >
+              <circle
+                cx={tip.cx} cy={tip.cy} r={tip.r + 3.5} fill="none" stroke={color} strokeWidth={1.5} opacity={0.35}
+                style={{ transition: 'cx 0.35s cubic-bezier(0.4,0,0.2,1), cy 0.35s cubic-bezier(0.4,0,0.2,1), stroke 0.35s ease' }}
+              />
+              <circle
+                cx={tip.cx} cy={tip.cy} r={tip.r} fill={color}
+                style={{ transition: 'cx 0.35s cubic-bezier(0.4,0,0.2,1), cy 0.35s cubic-bezier(0.4,0,0.2,1), fill 0.35s ease' }}
+              />
+            </g>
+          )
+        })()}
       </g>
     </svg>
   )
@@ -200,11 +213,11 @@ export function TypingDemo() {
           </p>
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl rounded-2xl border border-border bg-white dark:bg-secondary p-6 shadow-sm sm:p-8">
+        <div className="mx-auto mt-12 max-w-3xl rounded-2xl border border-border bg-white dark:bg-secondary p-4 shadow-sm sm:p-6 md:p-8">
           {/* Key to press */}
           <div className="flex flex-col items-center gap-2">
             <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Key to Press</span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               {WORD.split('').map((ch, i) => {
                 const isCur = i === curIdx
                 const isPast = i < curIdx
@@ -213,17 +226,17 @@ export function TypingDemo() {
                 return (
                   <div
                     key={i}
-                    style={
-                      isCur
-                        ? { backgroundColor: chColor, boxShadow: `0 0 24px ${chColor}90`, transform: 'scale(1.06)' }
-                        : undefined
-                    }
-                    className={[
-                      'flex items-center justify-center rounded-2xl font-mono font-bold transition-all',
-                      isCur ? 'h-14 w-14 text-2xl text-white sm:h-16 sm:w-16 sm:text-3xl' : 'h-9 w-9 text-base sm:h-10 sm:w-10',
-                      !isCur && !isPast ? 'bg-accent text-foreground/80' : '',
-                      isPast ? 'bg-transparent text-muted-foreground/40' : ''
-                    ].join(' ')}
+                    style={{
+                      backgroundColor: isCur ? chColor : isPast ? 'transparent' : 'hsl(var(--accent))',
+                      boxShadow: isCur ? `0 0 24px ${chColor}90` : '0 0 0 rgba(0,0,0,0)',
+                      transform: isCur ? 'scale(1.06)' : 'scale(1)',
+                      color: isCur ? '#fff' : isPast ? 'hsl(var(--muted-foreground) / 0.4)' : 'hsl(var(--foreground) / 0.8)',
+                      width: isCur ? 'clamp(40px, 12vw, 64px)' : 'clamp(24px, 7vw, 40px)',
+                      height: isCur ? 'clamp(40px, 12vw, 64px)' : 'clamp(24px, 7vw, 40px)',
+                      fontSize: isCur ? 'clamp(18px, 5vw, 28px)' : 'clamp(12px, 3.2vw, 16px)',
+                      transition: 'background-color 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.4,0,0.2,1), color 0.35s ease, width 0.35s ease, height 0.35s ease, font-size 0.35s ease'
+                    }}
+                    className="flex items-center justify-center rounded-2xl font-mono font-bold"
                   >
                     {ch}
                   </div>
@@ -242,43 +255,62 @@ export function TypingDemo() {
           </div>
 
           {/* Keyboard */}
-          <div className="mt-8 overflow-x-auto">
+          <div className="mt-8">
             <div
-              className="mx-auto min-w-[480px] max-w-xl rounded-[14px] p-2"
+              className="mx-auto w-full max-w-xl rounded-[14px] p-1.5 sm:p-2"
               style={{ background: 'linear-gradient(165deg, #e4e4e4 0%, #d0d0d0 55%, #c2c2c2 100%)' }}
             >
-              <div className="flex flex-col gap-[4px] rounded-[9px] p-1.5" style={{ background: '#a4a4a4' }}>
+              <div className="flex flex-col gap-[3px] rounded-[9px] p-1 sm:gap-[4px] sm:p-1.5" style={{ background: '#a4a4a4' }}>
                 {KB_ROWS.map((row, ri) => (
-                  <div key={ri} className="flex gap-[4px]">
+                  <div key={ri} className="flex gap-[3px] sm:gap-[4px]">
                     {row.map(({ key, label, flex }) => {
                       const lk = key === ' ' ? ' ' : key.toLowerCase()
                       const isActive = !NON_TYPE.has(key) && lk === activeKey
                       const keyFi = KEY_FINGER[lk]
                       const fc = !NON_TYPE.has(key) && keyFi ? FINGER_COLOR[keyFi.finger] : null
-                      const bg = isActive
-                        ? activeColor
-                        : fc
-                          ? `linear-gradient(to bottom, ${hexToRgba(fc, 0.1)}, ${hexToRgba(fc, 0.16)}), linear-gradient(to bottom, #ffffff, #eeeeee)`
-                          : 'linear-gradient(to bottom, #ffffff, #eeeeee)'
-                      const shadow = isActive
-                        ? `0 0 0 1.5px ${hexToRgba(activeColor, 0.65)}, 0 0 14px ${hexToRgba(activeColor, 0.55)}`
-                        : '0 2px 0 rgba(130,130,130,0.85), inset 0 0.5px 0 rgba(255,255,255,1)'
+                      const restBg = fc
+                        ? `linear-gradient(to bottom, ${hexToRgba(fc, 0.1)}, ${hexToRgba(fc, 0.16)}), linear-gradient(to bottom, #ffffff, #eeeeee)`
+                        : 'linear-gradient(to bottom, #ffffff, #eeeeee)'
                       return (
                         <div key={key} style={{ flex: flex ?? 1, minWidth: 0 }}>
+                          {/* Static gradient layer never changes — only the active overlay's opacity transitions,
+                              since CSS can't smoothly interpolate between two different gradients/colours.
+                              height/fontSize use clamp() so the whole keyboard scales fluidly with viewport
+                              width instead of relying on a fixed min-width that forced horizontal scrolling. */}
                           <div
                             style={{
-                              height: 26,
+                              position: 'relative',
+                              height: 'clamp(18px, 6vw, 26px)',
                               marginTop: isActive ? 2 : 0,
                               borderRadius: 4,
-                              background: bg,
-                              boxShadow: shadow,
-                              color: isActive ? '#fff' : '#1a1a1a',
+                              background: restBg,
+                              boxShadow: '0 2px 0 rgba(130,130,130,0.85), inset 0 0.5px 0 rgba(255,255,255,1)',
                               opacity: NON_TYPE.has(key) && !isActive ? 0.38 : 1,
-                              transition: 'margin-top 0.07s ease, box-shadow 0.07s ease'
+                              transition: 'margin-top 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease'
                             }}
-                            className="flex items-center justify-center text-[10px] font-semibold"
+                            className="flex items-center justify-center overflow-hidden font-semibold text-[#1a1a1a]"
                           >
-                            {label}
+                            <div
+                              style={{
+                                position: 'absolute',
+                                inset: 0,
+                                borderRadius: 4,
+                                backgroundColor: activeColor,
+                                boxShadow: `0 0 0 1.5px ${hexToRgba(activeColor, 0.65)}, 0 0 14px ${hexToRgba(activeColor, 0.55)}`,
+                                opacity: isActive ? 1 : 0,
+                                transition: 'opacity 0.3s ease'
+                              }}
+                            />
+                            <span
+                              style={{
+                                position: 'relative',
+                                color: isActive ? '#fff' : '#1a1a1a',
+                                fontSize: 'clamp(7px, 2.2vw, 10px)',
+                                transition: 'color 0.3s ease'
+                              }}
+                            >
+                              {label}
+                            </span>
                           </div>
                         </div>
                       )
@@ -294,28 +326,28 @@ export function TypingDemo() {
             <p className="mb-2 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               Finger Placement Guide
             </p>
-            <div className="flex items-center justify-center gap-8">
+            <div className="flex items-center justify-center gap-3 sm:gap-8">
               <div className="flex flex-col items-center gap-1">
-                <div className="h-24 w-24">
+                <div className="h-14 w-14 sm:h-20 sm:w-20 md:h-24 md:w-24">
                   <HandSVG hand="left" activeFinger={fi?.hand === 'left' ? fi.finger : null} />
                 </div>
-                <span className="text-[10px] font-semibold text-muted-foreground">Left Hand</span>
+                <span className="text-[9px] font-semibold text-muted-foreground sm:text-[10px]">Left Hand</span>
               </div>
 
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-1 sm:gap-1.5">
                 {([4, 3, 2, 1, 0] as Finger[]).map((f) => (
-                  <div key={f} className="flex items-center gap-2">
-                    <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: FINGER_COLOR[f] }} />
-                    <span className="text-[11px] text-muted-foreground">{FINGER_NAME[f]}</span>
+                  <div key={f} className="flex items-center gap-1.5 sm:gap-2">
+                    <div className="h-2 w-2 flex-shrink-0 rounded-full sm:h-2.5 sm:w-2.5" style={{ backgroundColor: FINGER_COLOR[f] }} />
+                    <span className="text-[10px] text-muted-foreground sm:text-[11px]">{FINGER_NAME[f]}</span>
                   </div>
                 ))}
               </div>
 
               <div className="flex flex-col items-center gap-1">
-                <div className="h-24 w-24">
+                <div className="h-14 w-14 sm:h-20 sm:w-20 md:h-24 md:w-24">
                   <HandSVG hand="right" activeFinger={fi?.hand === 'right' ? fi.finger : null} />
                 </div>
-                <span className="text-[10px] font-semibold text-muted-foreground">Right Hand</span>
+                <span className="text-[9px] font-semibold text-muted-foreground sm:text-[10px]">Right Hand</span>
               </div>
             </div>
           </div>
