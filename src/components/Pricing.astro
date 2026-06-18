@@ -63,19 +63,23 @@ const plansWithPayment = await Promise.all(
             ))}
           </ul>
 
-          <a
-            href={plan.upiLink}
-            class="mt-8 block rounded-md bg-brand py-3 text-center text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
-          >
-            Buy Now — Pay ₹{plan.price} via UPI
-          </a>
-          <p class="mt-1 text-center text-xs text-muted-foreground">Opens your UPI app on mobile with the amount filled in.</p>
-
-          <div class="mt-5 flex flex-col items-center gap-2 rounded-lg bg-accent/40 p-4">
-            <img src={plan.qr} alt={`UPI QR code to pay ₹${plan.price} for ${plan.name}`} width="160" height="160" class="rounded-md" />
-            <p class="text-xs text-muted-foreground">Or scan with any UPI app</p>
+          <div class="mt-8 flex flex-col items-center gap-2 rounded-lg border-2 border-brand/20 bg-accent/40 p-4">
+            <p class="text-sm font-semibold text-foreground">Scan to Pay ₹{plan.price}</p>
+            <img src={plan.qr} alt={`UPI QR code to pay ₹${plan.price} for ${plan.name}`} width="180" height="180" class="rounded-md" />
+            <p class="text-xs text-muted-foreground">Scan with GPay, PhonePe, Paytm or any UPI app</p>
             <p class="font-mono text-xs text-foreground/70">UPI ID: 8275320626@ybl</p>
           </div>
+
+          <a
+            href={plan.upiLink}
+            class="mt-4 block rounded-md border border-input bg-background py-2.5 text-center text-sm font-medium text-foreground/80 transition-colors hover:bg-accent"
+          >
+            Or tap to pay ₹{plan.price} directly
+          </a>
+          <p class="mt-1 text-center text-xs text-muted-foreground">
+            On some phones this opens your UPI app automatically. If it shows a security warning instead, please use the QR code above —
+            that's a safety check some UPI apps apply to payment links opened from a website.
+          </p>
 
           <a
             href={plan.waLink}
