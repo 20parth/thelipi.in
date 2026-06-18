@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { href: '#contact', label: 'Contact' }
 ]
 
-export const DOWNLOAD_URL = 'https://thelipi.in/relese/LiPi-Setup-1.0.0.exe'
+export const DOWNLOAD_URL = 'https://thelipi.in/release/LiPi-Setup-1.0.0.exe'
 
 export function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
