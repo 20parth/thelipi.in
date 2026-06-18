@@ -2,7 +2,17 @@
   <rect width="1280" height="800" fill="#eef0fb"/>
   <rect x="2" y="2" width="1276" height="796" fill="none" stroke="#1b1f4d" stroke-width="3" stroke-dasharray="14 10"/>
   <circle cx="640" cy="330" r="56" fill="#1b1f4d" opacity="0.1"/>
-  <text x="640" y="345" font-family="Arial, sans-serif" font-size="40" fill="#1b1f4d" text-anchor="middle">⌨</text>
+  <g transform="translate(612.4 302.4) scale(2.3)" fill="none" stroke="#1b1f4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 8h.01" />
+    <path d="M12 12h.01" />
+    <path d="M14 8h.01" />
+    <path d="M16 12h.01" />
+    <path d="M18 8h.01" />
+    <path d="M6 8h.01" />
+    <path d="M7 16h10" />
+    <path d="M8 12h.01" />
+    <rect width="20" height="16" x="2" y="4" rx="2" />
+  </g>
   <text x="640" y="440" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#1b1f4d" text-anchor="middle">Practice Mode</text>
   <text x="640" y="480" font-family="Arial, sans-serif" font-size="20" fill="#5b5f8a" text-anchor="middle">Placeholder — real screenshot coming soon</text>
 </svg>

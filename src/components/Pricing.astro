@@ -57,7 +57,17 @@ const plansWithPayment = await Promise.all(
           <ul class="mt-6 flex-1 space-y-3">
             {plan.features.map((f) => (
               <li class="flex items-start gap-2 text-sm text-foreground/80">
-                <span class="mt-0.5 text-brand">✓</span>
+                <svg
+                  class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
                 <span>{f}</span>
               </li>
             ))}
