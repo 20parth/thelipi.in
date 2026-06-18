@@ -1,5 +1,6 @@
 ---
 const year = new Date().getFullYear()
+const DOWNLOAD_URL = 'https://thelipi.in/relese/LiPi-Setup-1.0.0.exe'
 ---
 
 <footer id="contact" class="border-t border-border bg-accent/30 px-4 py-12">
@@ -8,6 +9,14 @@ const year = new Date().getFullYear()
       <img src="/logo.png" alt="LiPi logo" width="28" height="28" class="rounded-md" />
       <span class="text-base font-bold text-brand">LiPi</span>
     </div>
+
+    <a
+      href={DOWNLOAD_URL}
+      download
+      class="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
+    >
+      Download for Windows
+    </a>
 
     <p class="text-sm text-foreground/80">
       LiPi – The Typing Tutor · Designed &amp; Developed by Parth Bhawar

@@ -5,9 +5,12 @@ import { motion, AnimatePresence } from 'motion/react'
 const NAV_LINKS = [
   { href: '#features', label: 'Features' },
   { href: '#screenshots', label: 'Screenshots' },
+  { href: '#download', label: 'Download' },
   { href: '#pricing', label: 'Pricing' },
   { href: '#contact', label: 'Contact' }
 ]
+
+export const DOWNLOAD_URL = 'https://thelipi.in/relese/LiPi-Setup-1.0.0.exe'
 
 export function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -68,8 +71,12 @@ export function Hero() {
               >
                 {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </button>
-              <a href="#pricing" className="flex h-12 items-center rounded-full bg-foreground px-8 text-base font-medium text-background hover:opacity-90">
-                Get License
+              <a
+                href={DOWNLOAD_URL}
+                download
+                className="flex h-12 items-center rounded-full bg-foreground px-8 text-base font-medium text-background hover:opacity-90"
+              >
+                Download
               </a>
             </div>
           </div>
@@ -129,9 +136,17 @@ export function Hero() {
                   </a>
                 ))}
                 <a
-                  href="#pricing"
+                  href={DOWNLOAD_URL}
+                  download
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex h-12 items-center justify-center rounded-full bg-foreground px-8 text-base font-medium text-background"
+                >
+                  Download
+                </a>
+                <a
+                  href="#pricing"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex h-12 items-center justify-center rounded-full border border-border px-8 text-base font-medium text-foreground"
                 >
                   Get License
                 </a>
@@ -156,13 +171,18 @@ export function Hero() {
             Mode — built for students and typing institutes preparing for government exams.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-            <a href="#pricing" className="flex h-12 items-center rounded-full bg-foreground px-8 text-base font-medium text-background hover:opacity-90">
+            <a
+              href={DOWNLOAD_URL}
+              download
+              className="flex h-12 items-center rounded-full bg-foreground px-8 text-base font-medium text-background hover:opacity-90"
+            >
+              Download for Windows
+            </a>
+            <a href="#pricing" className="flex h-12 items-center rounded-full border border-border px-8 text-base font-medium text-foreground hover:bg-accent">
               See Pricing
             </a>
-            <a href="#screenshots" className="flex h-12 items-center rounded-full border border-border px-8 text-base font-medium text-foreground hover:bg-accent">
-              View Screenshots
-            </a>
           </div>
+          <p className="mt-3 text-xs text-muted-foreground">Currently available for Windows · macOS coming soon</p>
 
           <div className="relative mx-auto my-20 w-full max-w-6xl">
             <div className="absolute inset-0 rounded shadow-lg bg-foreground/20 blur-[10rem]" />
