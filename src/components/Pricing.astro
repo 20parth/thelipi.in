@@ -1,0 +1,98 @@
+---
+import { buildUpiLink, buildUpiQrDataUri } from '@/utils/upi'
+
+const WHATSAPP_NUMBER = '919422214653'
+
+const plans = [
+  {
+    name: 'Student Plan',
+    duration: '4 Months',
+    price: 105,
+    blurb: 'For individual students preparing for typing exams at home.',
+    features: ['Full English + Marathi access', 'Practice Mode + 17-lesson Tutor Mode', 'Works fully offline', 'Single PC activation']
+  },
+  {
+    name: 'Institute Plan',
+    duration: '12 Months',
+    price: 155,
+    blurb: 'For typing institutes running batches of students on shared PCs.',
+    features: ['Everything in Student Plan', '12-month validity', 'Built for multi-student shared-PC use', 'Priority WhatsApp support']
+  }
+]
+
+const plansWithPayment = await Promise.all(
+  plans.map(async (plan) => {
+    const note = `LiPi ${plan.name} - ${plan.duration}`
+    const upiLink = buildUpiLink({ amount: plan.price, note })
+    const qr = await buildUpiQrDataUri({ amount: plan.price, note })
+    const waText = encodeURIComponent(
+      `Hi, I've just paid ₹${plan.price} for the LiPi ${plan.name} (${plan.duration}). Sharing the payment screenshot for my license key.`
+    )
+    const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`
+    return { ...plan, upiLink, qr, waLink }
+  })
+)
+---
+
+<section id="pricing" class="bg-background py-20 px-4">
+  <div class="mx-auto max-w-[1280px]">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Simple, one-time pricing</h2>
+      <p class="mt-4 text-lg text-muted-foreground">
+        Pay once via UPI, send us your payment screenshot on WhatsApp, and we'll send your license key back the same way.
+      </p>
+    </div>
+
+    <div class="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-8 sm:grid-cols-2">
+      {plansWithPayment.map((plan) => (
+        <div class="flex flex-col rounded-2xl border border-border bg-white p-8 shadow-sm">
+          <h3 class="text-xl font-bold text-foreground">{plan.name}</h3>
+          <p class="mt-1 text-sm text-muted-foreground">{plan.blurb}</p>
+
+          <div class="mt-6 flex items-baseline gap-2">
+            <span class="text-4xl font-extrabold text-brand">₹{plan.price}</span>
+            <span class="text-sm text-muted-foreground">/ {plan.duration}</span>
+          </div>
+
+          <ul class="mt-6 flex-1 space-y-3">
+            {plan.features.map((f) => (
+              <li class="flex items-start gap-2 text-sm text-foreground/80">
+                <span class="mt-0.5 text-brand">✓</span>
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href={plan.upiLink}
+            class="mt-8 block rounded-md bg-brand py-3 text-center text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
+          >
+            Buy Now — Pay ₹{plan.price} via UPI
+          </a>
+          <p class="mt-1 text-center text-xs text-muted-foreground">Opens your UPI app on mobile with the amount filled in.</p>
+
+          <div class="mt-5 flex flex-col items-center gap-2 rounded-lg bg-accent/40 p-4">
+            <img src={plan.qr} alt={`UPI QR code to pay ₹${plan.price} for ${plan.name}`} width="160" height="160" class="rounded-md" />
+            <p class="text-xs text-muted-foreground">Or scan with any UPI app</p>
+            <p class="font-mono text-xs text-foreground/70">UPI ID: 8275320626@ybl</p>
+          </div>
+
+          <a
+            href={plan.waLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-4 block rounded-md border border-border py-3 text-center text-sm font-semibold text-foreground/80 transition-colors hover:bg-accent"
+          >
+            Send Payment Screenshot on WhatsApp
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <p class="mx-auto mt-10 max-w-2xl text-center text-sm text-muted-foreground">
+      After payment, send your payment screenshot on WhatsApp to
+      <a href={`https://wa.me/919422214653`} target="_blank" rel="noopener noreferrer" class="font-medium text-brand"> +91&nbsp;94222&nbsp;14653</a>
+      and we'll send your license key the same way — usually within a few hours.
+    </p>
+  </div>
+</section>

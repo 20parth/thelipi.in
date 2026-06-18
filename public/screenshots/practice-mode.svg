@@ -1,0 +1,8 @@
+<svg width="1280" height="800" viewBox="0 0 1280 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="800" fill="#eef0fb"/>
+  <rect x="2" y="2" width="1276" height="796" fill="none" stroke="#1b1f4d" stroke-width="3" stroke-dasharray="14 10"/>
+  <circle cx="640" cy="330" r="56" fill="#1b1f4d" opacity="0.1"/>
+  <text x="640" y="345" font-family="Arial, sans-serif" font-size="40" fill="#1b1f4d" text-anchor="middle">⌨</text>
+  <text x="640" y="440" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#1b1f4d" text-anchor="middle">Practice Mode</text>
+  <text x="640" y="480" font-family="Arial, sans-serif" font-size="20" fill="#5b5f8a" text-anchor="middle">Placeholder — real screenshot coming soon</text>
+</svg>

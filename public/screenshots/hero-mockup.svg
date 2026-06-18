@@ -1,0 +1,8 @@
+<svg width="1248" height="765" viewBox="0 0 1248 765" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1248" height="765" fill="#eef0fb"/>
+  <rect x="2" y="2" width="1244" height="761" fill="none" stroke="#1b1f4d" stroke-width="3" stroke-dasharray="14 10"/>
+  <circle cx="624" cy="320" r="56" fill="#1b1f4d" opacity="0.1"/>
+  <text x="624" y="335" font-family="Arial, sans-serif" font-size="40" fill="#1b1f4d" text-anchor="middle">⌨</text>
+  <text x="624" y="430" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#1b1f4d" text-anchor="middle">LiPi App Screenshot</text>
+  <text x="624" y="470" font-family="Arial, sans-serif" font-size="20" fill="#5b5f8a" text-anchor="middle">Placeholder — real screenshot coming soon</text>
+</svg>
