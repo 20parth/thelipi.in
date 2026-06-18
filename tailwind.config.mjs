@@ -40,7 +40,8 @@ export default {
       },
       animation: {
         appear: 'appear 0.5s ease-out forwards',
-        'appear-zoom': 'appear-zoom 0.8s ease-out forwards'
+        'appear-zoom': 'appear-zoom 0.8s ease-out forwards',
+        aurora: 'aurora 16s ease-in-out infinite'
       },
       keyframes: {
         appear: {
@@ -50,6 +51,10 @@ export default {
         'appear-zoom': {
           '0%': { opacity: '0', transform: 'scale(0.98)' },
           '100%': { opacity: '1', transform: 'scale(1)' }
+        },
+        aurora: {
+          '0%, 100%': { filter: 'blur(96px) hue-rotate(0deg)', transform: 'translate(0, 0) scale(1)' },
+          '50%': { filter: 'blur(96px) hue-rotate(180deg)', transform: 'translate(-3%, 4%) scale(1.08)' }
         }
       }
     }

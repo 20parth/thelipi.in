@@ -1,29 +1,15 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import { Header } from '@/components/Header'
+import { Hero } from '@/components/Hero'
 import Features from '@/components/Features.astro'
 import Screenshots from '@/components/Screenshots.astro'
 import Pricing from '@/components/Pricing.astro'
 import Footer from '@/components/Footer.astro'
-import { HeroWithMockup } from '@/components/blocks/hero-with-mockup'
 ---
 
 <Layout>
-  <Header client:load />
-
   <main>
-    <HeroWithMockup
-      title="Master Marathi & English Typing, the Right Way"
-      description="LiPi teaches the official Remington keyboard layout through a structured, step-by-step Tutor Mode — built for students and typing institutes preparing for government exams."
-      primaryCta={{ text: 'See Pricing', href: '#pricing' }}
-      secondaryCta={{ text: 'View Screenshots', href: '#screenshots' }}
-      mockupImage={{
-        src: '/screenshots/hero-mockup.svg',
-        alt: 'LiPi typing tutor app — placeholder screenshot',
-        width: 1248,
-        height: 765
-      }}
-    />
+    <Hero client:load />
 
     <Features />
     <Screenshots />
