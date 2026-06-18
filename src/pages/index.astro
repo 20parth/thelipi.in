@@ -1,6 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import Header from '@/components/Header.astro'
+import { Header } from '@/components/Header'
 import Features from '@/components/Features.astro'
 import Screenshots from '@/components/Screenshots.astro'
 import Pricing from '@/components/Pricing.astro'
@@ -9,7 +9,7 @@ import { HeroWithMockup } from '@/components/blocks/hero-with-mockup'
 ---
 
 <Layout>
-  <Header />
+  <Header client:load />
 
   <main>
     <HeroWithMockup

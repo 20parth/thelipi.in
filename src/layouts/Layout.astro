@@ -23,6 +23,17 @@ const ogImage = new URL('/og-image.png', Astro.site)
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="canonical" href={canonicalURL} />
 
+    <!-- Applies the saved/system theme before first paint, so there's no light-flash on dark-mode loads. -->
+    <script is:inline>
+      (function () {
+        const saved = localStorage.getItem('theme')
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark')
+        }
+      })()
+    </script>
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta

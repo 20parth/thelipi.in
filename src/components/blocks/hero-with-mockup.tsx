@@ -1,4 +1,5 @@
 import type React from 'react'
+import { ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Mockup } from '@/components/ui/mockup'
@@ -7,6 +8,7 @@ import { Glow } from '@/components/ui/glow'
 interface HeroWithMockupProps {
   title: string
   description: string
+  badge?: string
   primaryCta?: {
     text: string
     href: string
@@ -28,6 +30,7 @@ interface HeroWithMockupProps {
 export function HeroWithMockup({
   title,
   description,
+  badge = '17-Lesson Marathi Tutor Mode',
   primaryCta = { text: 'See Pricing', href: '#pricing' },
   secondaryCta = { text: 'View Screenshots', href: '#screenshots' },
   mockupImage,
@@ -42,8 +45,23 @@ export function HeroWithMockup({
         className
       )}
     >
+      {/* Dark-mode-only gradient blobs + grain, adapted from the Hero2 reference design */}
+      <div className="absolute -right-60 -top-10 z-0 hidden flex-col items-end blur-xl dark:flex">
+        <div className="z-1 h-[10rem] w-[60rem] rounded-full bg-gradient-to-b from-purple-600 to-sky-600 blur-[6rem]" />
+        <div className="z-1 h-[10rem] w-[90rem] rounded-full bg-gradient-to-b from-pink-900 to-yellow-400 blur-[6rem]" />
+        <div className="z-1 h-[10rem] w-[60rem] rounded-full bg-gradient-to-b from-yellow-600 to-sky-500 blur-[6rem]" />
+      </div>
+      <div className="bg-noise absolute inset-0 z-0 hidden opacity-30 dark:block" />
+
       <div className="relative mx-auto max-w-[1280px] flex flex-col gap-12 lg:gap-24">
         <div className="relative z-10 flex flex-col items-center gap-6 pt-8 md:pt-16 text-center lg:gap-12">
+          {badge && (
+            <div className="mx-auto flex max-w-fit items-center justify-center space-x-2 rounded-full bg-accent px-4 py-2 backdrop-blur-sm animate-appear opacity-0 dark:bg-white/10">
+              <span className="text-sm font-medium text-foreground dark:text-white">{badge}</span>
+              <ArrowRight className="h-4 w-4 text-foreground dark:text-white" />
+            </div>
+          )}
+
           <h1
             className={cn(
               'inline-block animate-appear',
