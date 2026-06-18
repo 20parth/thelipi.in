@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight, Menu, X, Moon, Sun } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
+import { cn } from '@/lib/utils'
 
 const NAV_LINKS = [
   { href: '#features', label: 'Features' },
@@ -15,9 +16,21 @@ export const DOWNLOAD_URL = 'https://thelipi.in/relese/LiPi-Setup-1.0.0.exe'
 export function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isDark, setIsDark] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains('dark'))
+  }, [])
+
+  // Nav is transparent over the hero at the top of the page (like before), and only
+  // picks up the dark glass overlay once the user actually scrolls past it.
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 20)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   function toggleTheme() {
@@ -29,21 +42,36 @@ export function Hero() {
 
   return (
     <>
-      {/* Navigation lives OUTSIDE the overflow-hidden hero wrapper below — `sticky` only works
-          up to the nearest ancestor with overflow:hidden, so nesting it inside that wrapper would
-          make it stop sticking the moment the user scrolls past the hero's own height. */}
-      <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
+      {/* Navigation is `fixed`, not `sticky` and not nested inside the hero's own box — both matter:
+          `sticky` only works up to the nearest overflow:hidden ancestor (would stop sticking past the
+          hero's height if nested inside it), and being a normal-flow sibling would push the hero's
+          background down below the nav instead of letting it render behind/through it. Fixed makes
+          the nav float over the hero's full background from y=0, which is what makes "transparent at
+          the top" actually show the grid/aurora glow instead of the plain page background. */}
+      <nav
+        className={cn(
+          'fixed inset-x-0 top-0 z-50 transition-all duration-300',
+          scrolled ? 'border-b border-white/10 bg-black/40 backdrop-blur-md' : 'border-b border-transparent bg-transparent'
+        )}
+      >
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <a href="/" className="flex items-center">
             <img src="/logo.png" alt="LiPi logo" className="h-12 w-12 rounded-full" />
-            <span className="ml-2 text-xl font-bold text-foreground">LiPi</span>
+            <span className={cn('ml-2 text-xl font-bold transition-colors', scrolled ? 'text-white' : 'text-foreground')}>LiPi</span>
           </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             <div className="flex items-center space-x-6">
               {NAV_LINKS.map((l) => (
-                <a key={l.href} href={l.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className={cn(
+                    'text-sm transition-colors',
+                    scrolled ? 'text-white/70 hover:text-white' : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
                   {l.label}
                 </a>
               ))}
@@ -52,14 +80,20 @@ export function Hero() {
               <button
                 onClick={toggleTheme}
                 aria-label="Toggle dark mode"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground/70 transition-colors hover:bg-accent"
+                className={cn(
+                  'flex h-9 w-9 items-center justify-center rounded-full border transition-colors',
+                  scrolled ? 'border-white/20 text-white/80 hover:bg-white/10' : 'border-border text-foreground/70 hover:bg-accent'
+                )}
               >
                 {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </button>
               <a
                 href={DOWNLOAD_URL}
                 download
-                className="flex h-12 items-center rounded-full bg-foreground px-8 text-base font-medium text-background hover:opacity-90"
+                className={cn(
+                  'flex h-12 items-center rounded-full px-8 text-base font-medium transition-colors hover:opacity-90',
+                  scrolled ? 'bg-white text-black' : 'bg-foreground text-background'
+                )}
               >
                 Download
               </a>
@@ -71,7 +105,10 @@ export function Hero() {
             <button
               onClick={toggleTheme}
               aria-label="Toggle dark mode"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground/70"
+              className={cn(
+                'flex h-9 w-9 items-center justify-center rounded-full border transition-colors',
+                scrolled ? 'border-white/20 text-white/80' : 'border-border text-foreground/70'
+              )}
             >
               {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
@@ -81,9 +118,9 @@ export function Hero() {
             >
               <span className="sr-only">Toggle menu</span>
               {mobileMenuOpen ? (
-                <X className="h-6 w-6 text-foreground" />
+                <X className={cn('h-6 w-6', scrolled ? 'text-white' : 'text-foreground')} />
               ) : (
-                <Menu className="h-6 w-6 text-foreground" />
+                <Menu className={cn('h-6 w-6', scrolled ? 'text-white' : 'text-foreground')} />
               )}
             </button>
           </div>
@@ -161,10 +198,11 @@ export function Hero() {
       </div>
       <div className="bg-noise pointer-events-none absolute inset-0 z-0 hidden opacity-30 dark:block" />
 
-      {/* Content container */}
-      <div className="relative z-10">
+      {/* Content container — pt-28 clears the fixed nav's own height (it no longer takes up
+          flow space now that it's `fixed`, so this box has to reserve the room itself). */}
+      <div className="relative z-10 pt-28">
         {/* Badge */}
-        <div className="mx-auto mt-12 flex max-w-fit items-center justify-center space-x-2 rounded-full bg-accent px-4 py-2 backdrop-blur-sm">
+        <div className="mx-auto flex max-w-fit items-center justify-center space-x-2 rounded-full bg-accent px-4 py-2 backdrop-blur-sm">
           <span className="text-sm font-medium text-foreground">Marathi/English Tutor Mode</span>
           <ArrowRight className="h-4 w-4 text-foreground" />
         </div>
@@ -176,7 +214,7 @@ export function Hero() {
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
             LiPi teaches the official Remington keyboard layout through a structured, step-by-step Tutor
-            Mode — built for students and typing institutes preparing for government exams.
+            Mode built for students and typing institutes preparing for government exams.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
             <a
