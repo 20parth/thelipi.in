@@ -40,6 +40,10 @@ export function Hero() {
     localStorage.setItem('theme', next ? 'dark' : 'light')
   }
 
+  function trackDownload() {
+    window.clarity?.('event', 'download_exe')
+  }
+
   return (
     <>
       {/* Navigation is `fixed`, not `sticky` and not nested inside the hero's own box — both matter:
@@ -90,6 +94,7 @@ export function Hero() {
               <a
                 href={DOWNLOAD_URL}
                 download
+                onClick={trackDownload}
                 className={cn(
                   'flex h-12 items-center rounded-full px-8 text-base font-medium transition-colors hover:opacity-90',
                   scrolled ? 'bg-white text-black' : 'bg-foreground text-background'
@@ -161,7 +166,10 @@ export function Hero() {
               <a
                 href={DOWNLOAD_URL}
                 download
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => {
+                  trackDownload()
+                  setMobileMenuOpen(false)
+                }}
                 className="flex h-12 items-center justify-center rounded-full bg-foreground px-8 text-base font-medium text-background"
               >
                 Download
@@ -220,6 +228,7 @@ export function Hero() {
             <a
               href={DOWNLOAD_URL}
               download
+              onClick={trackDownload}
               className="flex h-12 items-center rounded-full bg-foreground px-8 text-base font-medium text-background hover:opacity-90"
             >
               Download for Windows

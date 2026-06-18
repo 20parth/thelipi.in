@@ -13,6 +13,7 @@ const DOWNLOAD_URL = 'https://thelipi.in/release/LiPi-Setup-1.0.0.exe'
     <a
       href={DOWNLOAD_URL}
       download
+      onclick="window.clarity && window.clarity('event', 'download_exe')"
       class="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
     >
       Download for Windows
